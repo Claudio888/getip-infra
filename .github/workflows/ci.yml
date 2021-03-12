@@ -1,0 +1,81 @@
+name: 'CI'
+
+on: 
+  workflow_dispatch:
+    inputs:
+      envDeploy:
+        description: Environtment to deploy
+        required: true
+        default: "dev"
+
+
+jobs:
+  packer:
+    name: 'Packer'
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/packer:latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout packer code
+      uses: actions/checkout@v2
+
+    - name: Packer Version
+      run: packer --version
+
+    - name: Check path
+      run: pwd
+    
+    - name: Packer Validation
+      run: packer validate -syntax-only ./packer/image.json
+
+    - name: Packer execute jobs
+      run: packer build ./packer/image.json
+      env:
+        ECR_AWS_ACCESS_KEY: ${{ secrets.ECR_AWS_ACCESS_KEY }}
+        ECR_AWS_SECRET_KEY: ${{ secrets.ECR_AWS_SECRET_KEY }}
+  
+  terraform:
+    name: 'Terraform'
+    needs: packer
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:latest
+
+    defaults:
+      run:
+        working-directory: terraform
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.ECR_AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.ECR_AWS_SECRET_KEY }}
+
+    steps:
+    - name: Checkout terraform code
+      uses: actions/checkout@v2 
+
+    - name: Terraform Version
+      run: terraform --version
+   
+    - name: Check path
+      run: pwd
+    
+    - name: Terraform init
+      run: terraform init
+
+    - name: Select correct workspace if not exists create it
+      run: terraform workspace select ${{ github.event.inputs.envDeploy }} || terraform workspace new ${{ github.event.inputs.envDeploy }}
+    
+    - name: Terraform plan
+      run: terraform plan -var-file=${{ github.event.inputs.envDeploy }}.tfvars
+    
+    - name: Terraform apply
+      run: terraform apply -var-file=${{ github.event.inputs.envDeploy }}.tfvars -auto-approve
+
+    - name: Debug if file was created
+      run: cat hosts
