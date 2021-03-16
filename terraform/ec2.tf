@@ -3,7 +3,7 @@ data "aws_ami" "ubuntu"{
 
   filter {
     name   = "name"
-    values = ["ubuntu-rtd-*"]
+    values = ["ubuntu-getip-*"]
   }
 
   owners = ["933375035704"] #My own account

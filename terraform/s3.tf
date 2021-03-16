@@ -18,12 +18,14 @@ resource "aws_s3_bucket_object" "upload_object" {
 
   bucket = aws_s3_bucket.buckets3.id
 
-  key    = "profile"
+  key    = "hosts"
 
   acl    = "private"
 
-  source = "${path.module}/hosts"
+  source = "hosts"
 
-  etag = filemd5("hosts")
+  depends_on = [
+    local_file.tf_host_ansible,
+  ]
 
 }

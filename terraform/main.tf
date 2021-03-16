@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "packer-terraform-ansible-deploy"
+    bucket = "getip-infrastructure"
     key    = "terraform-test.tfstate"
     region = "us-east-1"
   }
