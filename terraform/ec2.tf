@@ -1,6 +1,5 @@
 data "aws_ami" "ubuntu"{
-    most_recent = true
-
+  most_recent = true
   filter {
     name   = "name"
     values = ["ubuntu-getip-*"]
@@ -9,8 +8,7 @@ data "aws_ami" "ubuntu"{
   owners = ["933375035704"] #My own account
 }
 
-
-resource "aws_instance" "web" {
+resource "aws_instance" "application" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   key_name = "aws-ec2"
@@ -23,5 +21,5 @@ resource "aws_instance" "web" {
 
 resource "aws_eip" "ip"{
   vpc = true
-  instance = aws_instance.web.id
+  instance = aws_instance.application.id
 }
