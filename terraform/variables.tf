@@ -9,5 +9,5 @@ variable "env_prefix"{
 
 variable "ingress_ports"{
   type    = list(number)
-  default = [22]
+  default = [22,8090]
   }

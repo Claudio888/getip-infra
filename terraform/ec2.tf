@@ -11,7 +11,7 @@ data "aws_ami" "ubuntu"{
 resource "aws_instance" "application" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  key_name = "aws-ec2"
+  key_name = "aws-getip"
   tags = {
     Name = format("getip-%s",var.env_prefix)
       }
