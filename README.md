@@ -5,7 +5,11 @@ Infraestrutura como código da aplicação https://github.com/Claudio888/getip-a
 # Recursos criados
 
 #### Packer
-- Imagem Ubuntu personalizada pronta para receber uma imagem do ECR
+- Imagem Ubuntu personalizada com o seguinte conteudo
+  - Docker
+  - Docker Compose
+  - AWS CLI configurado
+  - Python3
 
 #### Terraform
 
