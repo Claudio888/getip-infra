@@ -2,12 +2,12 @@
 
 Infraestrutura como código da aplicação https://github.com/Claudio888/getip-app
 
-Possibilita a criação dos seguintes recursos:
+# Recursos criados
 
-### Packer
+#### Packer
 - Imagem Ubuntu personalizada pronta para receber uma imagem do ECR
 
-### Terraform
+#### Terraform
 
 - EC2
 - S3
@@ -31,7 +31,6 @@ Desta forma no momento de fazer o deployment de seu APP, será necessário alter
 
 ```
 build-deploy\deploy\roles\get-hosts\vars\main.yml
-
 ```
 Para documentação de deployment vá até o repositorio do app(https://github.com/Claudio888/getip-app). 
 
@@ -56,14 +55,12 @@ Exemplo:
 ```
 export ECR_AWS_ACCESS_KEY=DSJAKLÇASDJÇKLADS
 export ECR_AWS_SECRET_KEY=23u4r8023302hnaaçaçaç
-
 ```
 
 - Em seguida execute o comando para rodar o packer, para que ele crie efetivamente a imagem na AWS
 
 ```
 packer build image.json 
-
 ```
 ### Terraform
 
@@ -71,26 +68,22 @@ packer build image.json
 
 ```
 terraform init
-
 ```
 
 - Vamos alterar para o workspace desejado no exemplo sera o "dev-blue"
 
 ```
 terraform workspace new dev-blue
-
 ```
 - Executamos um plan, para verificarmos ser serão criados todos os recursos desejados
 
 ```
 terraform plan -out plano
-
 ```
 - E finalmente um apply caso nosso plan tenha sido feito com sucesso
 
 ```
 terraform apply plano
-
 ```
 
 ## Backlog 
